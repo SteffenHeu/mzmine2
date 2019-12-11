@@ -100,7 +100,7 @@ public class PeakListBlankSubtractionSingleTask extends AbstractTask {
 
   @Override
   public void run() {
-    setStatus(TaskStatus.FINISHED);
+    setStatus(TaskStatus.PROCESSING);
     ArrayList<PeakListRow> rows = new ArrayList<>();
 
     // get the rows that contain peaks from the current raw data file
