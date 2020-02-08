@@ -1,16 +1,16 @@
 /*
  * Copyright 2006-2018 The MZmine 2 Development Team
- * 
+ *
  * This file is part of MZmine 2.
- * 
+ *
  * MZmine 2 is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with MZmine 2; if not,
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA
@@ -87,7 +87,7 @@ public class CsvReadTask extends AbstractTask {
       }
       logger.info("opening raw file " + dataSource);
 
-      String acquisitionDate = getAcqusitionDate(scanner);
+      String acquisitionDate = getAcquisitionDate(scanner);
       if (acquisitionDate == null) {
         setErrorMessage("Could not find acquisition date in file " + file.getAbsolutePath());
         setStatus(TaskStatus.ERROR);
@@ -107,7 +107,7 @@ public class CsvReadTask extends AbstractTask {
         if (line.startsWith("Time")) {
           String[] axes = line.split(",");
           logger.fine("Found axes" + Arrays.toString(axes));
-          for (int i = 1; i < axes.length; i++) {
+          for (int i = 1; i < axes.length; i++) { // skip first, because it contains the time
             String axis = axes[i];
             ions += axis + ", ";
             if (axis.contains("->")) {
@@ -118,7 +118,7 @@ public class CsvReadTask extends AbstractTask {
               logger.fine("Axis " + axis + " was scanned at m/z = '" + mz + "'");
               mzsList.add(mz);
             } else {
-              String mz = axis.replaceAll("[^0-9]","");
+              String mz = axis.replaceAll("[^0-9]", "");
               logger.fine("axis " + axis + " was scanned at " + mz);
               mzsList.add(mz);
             }
@@ -131,7 +131,7 @@ public class CsvReadTask extends AbstractTask {
       for (int i = 0; i < mzsList.size(); i++)
         mzs[i] = Integer.valueOf(mzsList.get(i));
 
-      Range<Double> mzRange = Range.closed((double) mzs[0] - 10, (double) mzs[1] + 10);
+      Range<Double> mzRange = Range.closed((double) mzs[0] - 10, (double) mzs[mzs.length - 1] + 10);
 
       int scanNumber = 1;
 
@@ -184,7 +184,7 @@ public class CsvReadTask extends AbstractTask {
     return path;
   }
 
-  private @Nullable String getAcqusitionDate(@Nonnull Scanner scanner) {
+  private @Nullable String getAcquisitionDate(@Nonnull Scanner scanner) {
     String acquisitionDate = null;
 
     while (scanner.hasNextLine()) {
