@@ -87,7 +87,7 @@ public class CsvReadTask extends AbstractTask {
       }
       logger.info("opening raw file " + dataSource);
 
-      String acquisitionDate = getAcqusitionDate(scanner);
+      String acquisitionDate = getAcquisitionDate(scanner);
       if (acquisitionDate == null) {
         setErrorMessage("Could not find acquisition date in file " + file.getAbsolutePath());
         setStatus(TaskStatus.ERROR);
@@ -184,7 +184,7 @@ public class CsvReadTask extends AbstractTask {
     return path;
   }
 
-  private @Nullable String getAcqusitionDate(@Nonnull Scanner scanner) {
+  private @Nullable String getAcquisitionDate(@Nonnull Scanner scanner) {
     String acquisitionDate = null;
 
     while (scanner.hasNextLine()) {
