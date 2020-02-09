@@ -1,16 +1,16 @@
 /*
  * Copyright 2006-2018 The MZmine 2 Development Team
- * 
+ *
  * This file is part of MZmine 2.
- * 
+ *
  * MZmine 2 is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with MZmine 2; if not,
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA
@@ -18,6 +18,7 @@
 
 package net.sf.mzmine.modules.peaklistmethods.filtering.blanksubtraction;
 
+import dulab.adap.datamodel.RawData;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +40,7 @@ import net.sf.mzmine.util.PeakListUtils;
 import net.sf.mzmine.util.PeakUtils;
 
 /**
- * 
  * @author SteffenHeu steffen.heuckeroth@gmx.de / s_heuc03@uni-muenster.de
- *
  */
 public class PeakListBlankSubtractionMasterTask extends AbstractTask {
 
@@ -53,10 +52,13 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
   private PeakListBlankSubtractionParameters parameters;
 
   private int minBlankDetections;
+  private boolean removeBlankRawFilesFromPeakList;
 
   private RawDataFilesSelection blankSelection;
   private RawDataFile[] blankRaws;
   private PeakList alignedFeatureList;
+
+  private String suffix;
 
   private List<AbstractTask> subTasks;
 
@@ -76,6 +78,12 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
             .getMatchingPeakLists()[0];
     this.minBlankDetections =
         parameters.getParameter(PeakListBlankSubtractionParameters.minBlanks).getValue();
+
+    this.removeBlankRawFilesFromPeakList = parameters
+        .getParameter(PeakListBlankSubtractionParameters.removeBlanks).getValue();
+
+    this.suffix = parameters
+        .getParameter(PeakListBlankSubtractionParameters.suffix).getValue();
 
     subTasks = new ArrayList<>();
 
@@ -118,8 +126,9 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
 
     for (RawDataFile raw : alignedFeatureList.getRawDataFiles()) {
       // only create a task for every file that is not a blank
-      if (Arrays.asList(blankRaws).contains(raw))
+      if (Arrays.asList(blankRaws).contains(raw)) {
         continue;
+      }
 
       // these tasks will access the passed array and remove the features that appear in their raw
       // data file and the blanks from these rows
@@ -127,8 +136,9 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
       MZmineCore.getTaskController().addTask(task);
       subTasks.add(task);
 
-      if (getStatus() == TaskStatus.CANCELED)
+      if (getStatus() == TaskStatus.CANCELED) {
         return;
+      }
     }
 
     // wait for tasks to finish
@@ -136,8 +146,9 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
     while (!allTasksFinished) {
       allTasksFinished = true;
       for (AbstractTask task : subTasks) {
-        if (task.getStatus() != TaskStatus.FINISHED)
+        if (task.getStatus() != TaskStatus.FINISHED) {
           allTasksFinished = false;
+        }
       }
 
       try {
@@ -149,8 +160,9 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
         return;
       }
 
-      if (getStatus() == TaskStatus.CANCELED)
+      if (getStatus() == TaskStatus.CANCELED) {
         return;
+      }
     }
 
     // remove rows that only contain blankRaws
@@ -164,14 +176,27 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
         rows[i] = null;
       }
 
-      if (getStatus() == TaskStatus.CANCELED)
+      if (getStatus() == TaskStatus.CANCELED) {
         return;
+      }
     }
-    
+
+    RawDataFile[] allRaws;
+    if (removeBlankRawFilesFromPeakList) {
+      rows = PeakUtils.removeRawDataFiles(rows, blankRaws, false);
+      List<RawDataFile> raws = new ArrayList<>(Arrays.asList(alignedFeatureList.getRawDataFiles()));
+      for (RawDataFile r : blankRaws) {
+        boolean b = raws.remove(r);
+      }
+      allRaws = raws.toArray(new RawDataFile[0]);
+    } else {
+      allRaws = alignedFeatureList.getRawDataFiles();
+    }
+
     logger.finest("Removed " + onlyBlankRows + " rows that only existed in blankfiles.");
 
-    PeakList result = new SimplePeakList(alignedFeatureList.getName() + " sbtrctd",
-        alignedFeatureList.getRawDataFiles());
+    PeakList result = new SimplePeakList(alignedFeatureList.getName() + suffix,
+        allRaws);
 
     for (PeakListRow row : rows) {
       if (row != null) {
@@ -196,8 +221,9 @@ public class PeakListBlankSubtractionMasterTask extends AbstractTask {
       boolean contained = false;
 
       for (RawDataFile flRaw : flRaws) {
-        if (blankRaws[i] == flRaw)
+        if (blankRaws[i] == flRaw) {
           contained = true;
+        }
       }
 
       if (contained == false) {

@@ -22,6 +22,7 @@ import java.text.Format;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
 import com.google.common.collect.Range;
+import javax.annotation.Nullable;
 import net.sf.mzmine.datamodel.DataPoint;
 import net.sf.mzmine.datamodel.Feature;
 import net.sf.mzmine.datamodel.IsotopePattern;
@@ -38,7 +39,7 @@ import net.sf.mzmine.util.scans.ScanUtils;
 
 /**
  * Utilities for peaks and feature lists
- * 
+ *
  */
 public class PeakUtils {
 
@@ -47,7 +48,7 @@ public class PeakUtils {
 
   /**
    * Common utility method to be used as Peak.toString() method in various Peak implementations
-   * 
+   *
    * @param peak Peak to be converted to String
    * @return String representation of the peak
    */
@@ -66,9 +67,9 @@ public class PeakUtils {
    * Compares identities of two feature list rows. 1) if preferred identities are available, they
    * must be same 2) if no identities are available on both rows, return true 3) otherwise all
    * identities on both rows must be same
-   * 
+   *
    * @return True if identities match between rows
-   * 
+   *
    */
   public static boolean compareIdentities(PeakListRow row1, PeakListRow row2) {
 
@@ -113,10 +114,10 @@ public class PeakUtils {
 
   /**
    * Compare charge state of the best MS/MS precursor masses
-   * 
+   *
    * @param row1 PeaklistRow 1
    * @param row2 PeakListRow 2
-   * 
+   *
    * @return true, same charge state
    */
   public static boolean compareChargeState(PeakListRow row1, PeakListRow row2) {
@@ -132,7 +133,7 @@ public class PeakUtils {
 
   /**
    * Returns true if feature list row contains a compound identity matching to id
-   * 
+   *
    */
   public static boolean containsIdentity(PeakListRow row, PeakIdentity id) {
 
@@ -208,7 +209,7 @@ public class PeakUtils {
 
   /**
    * Integrates over a given m/z and rt range within a raw data file.
-   * 
+   *
    * @param dataFile
    * @param rtRange
    * @param mzRange
@@ -252,7 +253,7 @@ public class PeakUtils {
   }
 
   /**
-   * 
+   *
    * @param row The row.
    * @return The average retention time range of all features contained in this peak list row across
    *         all raw data files. Empty range (0,0) if the row is null or has no feature assigned to
@@ -292,11 +293,17 @@ public class PeakUtils {
 
   /**
    * Creates a copy of a PeakListRow.
+   *
    * @param row A row.
-   * @return A copy of row.
+   * @return A copy of row. In case the row is null, null will be returned.
    */
-  public static PeakListRow copyPeakRow(final PeakListRow row) {
+  public static @Nullable
+  PeakListRow copyPeakRow(final PeakListRow row) {
     // Copy the feature list row.
+    if (row == null) {
+      return null;
+    }
+
     final PeakListRow newRow = new SimplePeakListRow(row.getID());
     PeakUtils.copyPeakListRowProperties(row, newRow);
 
@@ -309,29 +316,47 @@ public class PeakUtils {
 
     return newRow;
   }
-  
+
   /**
    * Creates a copy of an array of PeakListRows.
+   *
    * @param rows The rows to be copied.
-   * @return A copy of rows.
+   * @return A copy of rows. If a row is null, the row in the new array will be null as well.
    */
   public static PeakListRow[] copyPeakRows(final PeakListRow[] rows) {
     PeakListRow[] newRows = new PeakListRow[rows.length];
-    
+
     for(int i = 0; i < newRows.length; i++) {
       newRows[i] = copyPeakRow(rows[i]);
     }
-    
+
     return newRows;
   }
 
   /**
    * Convenience method to sort an array of PeakListRows by ascending m/z
+   *
    * @param rows
    * @return Array sorted by ascending m/z.
    */
   public static PeakListRow[] sortRowsMzAsc(PeakListRow[] rows) {
     Arrays.sort(rows, ascMzRowSorter);
+    return rows;
+  }
+
+  public static PeakListRow[] removeRawDataFiles(PeakListRow[] rows, RawDataFile[] files,
+      boolean copy) {
+    if (copy) {
+      rows = copyPeakRows(rows);
+    }
+
+    for (PeakListRow row : rows) {
+      for (RawDataFile file : files) {
+        if (row != null) {
+          row.removePeak(file);
+        }
+      }
+    }
     return rows;
   }
 }

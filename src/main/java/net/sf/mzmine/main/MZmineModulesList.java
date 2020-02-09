@@ -1,16 +1,16 @@
 /*
  * Copyright 2006-2015 The MZmine 2 Development Team
- * 
+ *
  * This file is part of MZmine 2.
- * 
+ *
  * MZmine 2 is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with MZmine 2; if not,
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA
@@ -147,7 +147,7 @@ import net.sf.mzmine.modules.visualization.vankrevelendiagram.VanKrevelenDiagram
  */
 public class MZmineModulesList {
 
-  public static final Class<?> MODULES[] = new Class<?>[] {
+  public static final Class<?> MODULES[] = new Class<?>[]{
 
       // Project methods
       ProjectLoadModule.class, //
@@ -213,7 +213,6 @@ public class MZmineModulesList {
       IsotopePatternCalculator.class, //
       IsotopePeakScannerModule.class, //
 
-
       // Feature detection
       SmoothingModule.class, //
       DeconvolutionModule.class, //
@@ -231,7 +230,6 @@ public class MZmineModulesList {
       PeakFilterModule.class, //
       PeaklistClearAnnotationsModule.class, //
       NeutralLossFilterModule.class, //
-
 
       // Normalization
       RTCalibrationModule.class, //
@@ -311,6 +309,6 @@ public class MZmineModulesList {
       // not ready for prime time:
       // DPPAnyElementIsotopeGrouperModule.class basically working, but only for specific elements
       // at the moment
-      //      PeakListBlankSubtractionModule.class
+      PeakListBlankSubtractionModule.class
   };
 }
