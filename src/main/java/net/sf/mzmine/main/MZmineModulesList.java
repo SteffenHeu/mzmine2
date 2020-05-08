@@ -94,6 +94,7 @@ import net.sf.mzmine.modules.rawdatamethods.exportscans.ExportScansFromRawFilesM
 import net.sf.mzmine.modules.rawdatamethods.exportscans.ExportScansModule;
 import net.sf.mzmine.modules.rawdatamethods.extractscans.ExtractScansModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.alignscans.AlignScansModule;
+import net.sf.mzmine.modules.rawdatamethods.filtering.badexportfilter.BadExportFilterModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.baselinecorrection.BaselineCorrectionModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.cropper.CropFilterModule;
 import net.sf.mzmine.modules.rawdatamethods.filtering.scanfilters.ScanFiltersModule;
@@ -167,6 +168,7 @@ public class MZmineModulesList {
       ShoulderPeaksFilterModule.class, //
       ChromatogramBuilderModule.class, //
       ADAPChromatogramBuilderModule.class, //
+      BadExportFilterModule.class,
       // Not ready for prime time: ADAP3DModule.class,
       GridMassModule.class, //
       ManualPeakPickerModule.class, //
