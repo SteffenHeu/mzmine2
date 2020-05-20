@@ -334,4 +334,15 @@ public class PeakUtils {
     Arrays.sort(rows, ascMzRowSorter);
     return rows;
   }
+
+  public static DataPoint[] getFeatureDataPoints(Feature feature) {
+    int[] scanNums = feature.getScanNumbers();
+
+    DataPoint[] featureDp = new DataPoint[scanNums.length];
+
+    for (int i = 0; i < scanNums.length; i++) {
+      featureDp[i] = feature.getDataPoint(scanNums[i]);
+    }
+    return featureDp;
+  }
 }

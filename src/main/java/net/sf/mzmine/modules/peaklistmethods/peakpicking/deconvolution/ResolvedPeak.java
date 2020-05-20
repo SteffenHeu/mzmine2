@@ -46,7 +46,7 @@ public class ResolvedPeak implements Feature {
 
   // Chromatogram m/z, RT, height, area
   private double mz, rt, height, area;
-  private Double fwhm = null, tf = null, af = null;
+  private Double fwhm = null, tf = null, af = null, snr = null;
 
   // Scan numbers
   private int scanNumbers[];
@@ -336,6 +336,16 @@ public class ResolvedPeak implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   // dulab Edit

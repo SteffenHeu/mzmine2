@@ -48,7 +48,7 @@ public class SimpleFeature implements Feature {
 
   // M/Z, RT, Height and Area, FWHM, Tailing factor, Asymmetry factor
   private double mz, rt, height, area;
-  private Double fwhm, tf, af;
+  private Double fwhm, tf, af, snr;
 
   // Boundaries of the peak raw data points
   private Range<Double> rtRange, mzRange, intensityRange;
@@ -103,6 +103,7 @@ public class SimpleFeature implements Feature {
     this.tf = null;
     this.af = null;
     this.parentChromatogramRowID = null;
+    this.snr = null;
   }
 
   /**
@@ -119,6 +120,7 @@ public class SimpleFeature implements Feature {
     this.fwhm = p.getFWHM();
     this.tf = p.getTailingFactor();
     this.af = p.getAsymmetryFactor();
+    this.snr = p.getSignalToNoiseRatio();
 
 
     this.rtRange = p.getRawDataPointsRTRange();
@@ -404,6 +406,24 @@ public class SimpleFeature implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  /**
+   * Sets the signal to noise ratio. calculated in the quality parameters
+   * @param snr
+   */
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  /**
+   *
+   * @return The signal to noise ratio
+   */
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   // dulab Edit

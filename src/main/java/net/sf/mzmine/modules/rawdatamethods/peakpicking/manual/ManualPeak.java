@@ -43,7 +43,7 @@ public class ManualPeak implements Feature {
 
   // Raw M/Z, RT, Height and Area
   private double mz, rt, height, area;
-  private Double fwhm = null, tf = null, af = null;
+  private Double fwhm = null, tf = null, af = null, snr = null;
 
   // Boundaries of the peak
   private Range<Double> rtRange, mzRange, intensityRange;
@@ -316,6 +316,16 @@ public class ManualPeak implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   // dulab Edit

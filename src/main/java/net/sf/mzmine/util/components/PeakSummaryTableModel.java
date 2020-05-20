@@ -19,6 +19,7 @@
 package net.sf.mzmine.util.components;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Vector;
 
@@ -36,11 +37,12 @@ public class PeakSummaryTableModel extends AbstractTableModel {
   private static NumberFormat mzFormat = MZmineCore.getConfiguration().getMZFormat();
   private static NumberFormat rtFormat = MZmineCore.getConfiguration().getRTFormat();
   private static NumberFormat intensityFormat = MZmineCore.getConfiguration().getIntensityFormat();
+  private static NumberFormat snrFormat = new DecimalFormat("0.00");
 
   private Vector<Feature> peaks = new Vector<Feature>();
   private Vector<Color> peakColors = new Vector<Color>();
 
-  private static String[] columnNames = {"File Name", "Mass", "RT", "Height", "Area"};
+  private static String[] columnNames = {"File Name", "Mass", "RT", "Height", "Area", "S/N"};
 
   public String getColumnName(int col) {
     return columnNames[col].toString();
@@ -73,6 +75,8 @@ public class PeakSummaryTableModel extends AbstractTableModel {
       case (4):
         value = intensityFormat.format(peak.getArea());
         break;
+      case (5):
+        value = snrFormat.format(peak.getSignalToNoiseRatio());
     }
 
     return value;

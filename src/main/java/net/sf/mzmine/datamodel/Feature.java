@@ -1,16 +1,16 @@
 /*
  * Copyright 2006-2018 The MZmine 2 Development Team
- * 
+ *
  * This file is part of MZmine 2.
- * 
+ *
  * MZmine 2 is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General License as published by the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General License for more details.
- * 
+ *
  * You should have received a copy of the GNU General License along with MZmine 2; if not, write to
  * the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
@@ -99,9 +99,12 @@ public interface Feature {
   /**
    * This method returns the best scan
    */
-  default @Nonnull Scan getRepresentativeScan() {
+  default @Nonnull
+  Scan getRepresentativeScan() {
     return getDataFile().getScan(getRepresentativeScanNumber());
-  };
+  }
+
+  ;
 
   /**
    * This method returns m/z and intensity of this peak in a given scan. This m/z and intensity does
@@ -142,14 +145,14 @@ public interface Feature {
 
   /**
    * Set best fragment scan numbers
-   * 
+   *
    * @param fragmentScanNumber
    */
   void setFragmentScanNumber(int fragmentScanNumber);
 
   /**
    * Set all fragment scan numbers
-   * 
+   *
    * @param allMS2FragmentScanNumbers
    */
   void setAllMS2FragmentScanNumbers(int[] allMS2FragmentScanNumbers);
@@ -204,6 +207,18 @@ public interface Feature {
    * Sets the asymmetry factor
    */
   void setAsymmetryFactor(Double af);
+
+  /**
+   * Sets the signal to noise ratio. calculated in the quality parameters
+   *
+   * @param snr
+   */
+  void setSignalToNoiseRatio(Double snr);
+
+  /**
+   * @return The signal to noise ratio. {@link net.sf.mzmine.modules.peaklistmethods.qualityparameters.QualityParameters#calculateSNRatios(PeakList)}.
+   */
+  Double getSignalToNoiseRatio();
 
   // dulab Edit
   void outputChromToFile();

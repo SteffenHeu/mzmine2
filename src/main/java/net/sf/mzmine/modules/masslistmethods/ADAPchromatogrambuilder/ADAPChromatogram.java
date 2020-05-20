@@ -61,7 +61,7 @@ public class ADAPChromatogram implements Feature {
 
   // Chromatogram m/z, RT, height, area. The mz value will be the highest points mz value
   private double mz, rt, height, area, weightedMz;
-  private Double fwhm = null, tf = null, af = null;
+  private Double fwhm = null, tf = null, af = null, snr = null;
 
   // Top intensity scan, fragment scan
   private int representativeScan = -1, fragmentScan = -1;
@@ -558,6 +558,16 @@ public class ADAPChromatogram implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   @Override

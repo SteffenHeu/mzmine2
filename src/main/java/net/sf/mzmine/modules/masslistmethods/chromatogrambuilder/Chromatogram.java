@@ -50,7 +50,7 @@ public class Chromatogram implements Feature {
 
   // Chromatogram m/z, RT, height, area
   private double mz, rt, height, area;
-  private Double fwhm = null, tf = null, af = null;
+  private Double fwhm = null, tf = null, af = null, snr = null;
 
   // Top intensity scan, fragment scan
   private int representativeScan = -1, fragmentScan = -1;
@@ -368,6 +368,16 @@ public class Chromatogram implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   @Override

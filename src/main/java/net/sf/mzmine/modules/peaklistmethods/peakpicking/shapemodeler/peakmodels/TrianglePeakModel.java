@@ -38,7 +38,7 @@ public class TrianglePeakModel implements Feature {
 
   // Peak information
   private double rt, height, mz, area;
-  private Double fwhm = null, tf = null, af = null;
+  private Double fwhm = null, tf = null, af = null, snr = null;
   private int[] scanNumbers;
   private RawDataFile rawDataFile;
   private FeatureStatus status;
@@ -228,6 +228,16 @@ public class TrianglePeakModel implements Feature {
   @Override
   public void setAsymmetryFactor(Double af) {
     this.af = af;
+  }
+
+  @Override
+  public void setSignalToNoiseRatio(Double snr) {
+    this.snr = snr;
+  }
+
+  @Override
+  public Double getSignalToNoiseRatio() {
+    return snr;
   }
 
   // dulab Edit
