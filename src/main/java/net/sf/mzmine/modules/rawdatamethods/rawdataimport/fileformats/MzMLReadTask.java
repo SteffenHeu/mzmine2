@@ -139,12 +139,17 @@ public class MzMLReadTask extends AbstractTask {
         int precursorCharge = extractPrecursorCharge(spectrum);
         String scanDefinition = extractScanDefinition(spectrum);
         DataPoint dataPoints[] = extractDataPoints(spectrum);
+        double injectionTime = extractIonInjectionTime(spectrum);
+
+        if(scanDefinition.contains("ITMS")) {
+          scanDefinition += " IT: " + injectionTime;
+        }
 
         // Auto-detect whether this scan is centroided
         MassSpectrumType spectrumType = ScanUtils.detectSpectrumType(dataPoints);
 
         SimpleScan scan = new SimpleScan(null, scanNumber, msLevel, retentionTime, precursorMz,
-            precursorCharge, null, dataPoints, spectrumType, polarity, scanDefinition, null);
+            precursorCharge, null, dataPoints, spectrumType, polarity, scanDefinition, null, injectionTime);
 
         for (SimpleScan s : parentStack) {
           if (s.getScanNumber() == parentScan) {
@@ -449,6 +454,40 @@ public class MzMLReadTask extends AbstractTask {
     }
     return PolarityType.UNKNOWN;
 
+  }
+
+  private double extractIonInjectionTime(Spectrum spectrum) {
+    List<CVParam> cvParams = spectrum.getCvParam();
+    if (cvParams != null) {
+      for (CVParam param : cvParams) {
+        String accession = param.getAccession();
+
+        if (accession == null)
+          continue;
+        if (accession.equals("MS:1000927"))
+          return Double.parseDouble(param.getValue());
+      }
+    }
+    ScanList scanListElement = spectrum.getScanList();
+    if (scanListElement != null) {
+      List<Scan> scanElements = scanListElement.getScan();
+      if (scanElements != null) {
+        for (Scan scan : scanElements) {
+          cvParams = scan.getCvParam();
+          if (cvParams == null)
+            continue;
+          for (CVParam param : cvParams) {
+            String accession = param.getAccession();
+            if (accession == null)
+              continue;
+            if (accession.equals("MS:1000927"))
+              return Double.parseDouble(param.getValue());
+          }
+
+        }
+      }
+    }
+    return 0;
   }
 
   private String extractScanDefinition(Spectrum spectrum) {

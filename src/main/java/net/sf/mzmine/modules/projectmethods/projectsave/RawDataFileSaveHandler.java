@@ -247,6 +247,11 @@ class RawDataFileSaveHandler {
     hd.characters(String.valueOf(rt).toCharArray(), 0, String.valueOf(rt).length());
     hd.endElement("", "", RawDataElementName.RETENTION_TIME.getElementName());
 
+    // <INJECTION_TIME>
+    hd.startElement("", "", RawDataElementName.INJECTION_TIME.getElementName(), atts);
+    hd.characters(String.valueOf(scan.getInjectionTime()).toCharArray(), 0, String.valueOf(scan.getInjectionTime()).length());
+    hd.endElement("", "", RawDataElementName.INJECTION_TIME.getElementName());
+
     // <CENTROIDED>
     hd.startElement("", "", RawDataElementName.CENTROIDED.getElementName(), atts);
     hd.characters(String.valueOf(scan.getSpectrumType()).toCharArray(), 0,
@@ -272,7 +277,6 @@ class RawDataFileSaveHandler {
         hd.endElement("", "", RawDataElementName.FRAGMENT_SCAN.getElementName());
       }
       hd.endElement("", "", RawDataElementName.QUANTITY_FRAGMENT_SCAN.getElementName());
-
     }
 
     // <MASS_LIST>

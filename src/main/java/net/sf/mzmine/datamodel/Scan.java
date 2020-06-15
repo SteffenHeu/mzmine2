@@ -95,4 +95,5 @@ public interface Scan extends MassSpectrum {
 
   public void removeMassList(@Nonnull MassList massList);
 
+  public double getInjectionTime();
 }

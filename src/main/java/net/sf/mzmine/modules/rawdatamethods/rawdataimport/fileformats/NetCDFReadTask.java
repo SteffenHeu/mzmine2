@@ -1,16 +1,16 @@
 /*
  * Copyright 2006-2018 The MZmine 2 Development Team
- * 
+ *
  * This file is part of MZmine 2.
- * 
+ *
  * MZmine 2 is free software; you can redistribute it and/or modify it under the terms of the GNU
  * General Public License as published by the Free Software Foundation; either version 2 of the
  * License, or (at your option) any later version.
- * 
+ *
  * MZmine 2 is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
  * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License along with MZmine 2; if not,
  * write to the Free Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  * USA
@@ -45,7 +45,7 @@ import ucar.nc2.NetcdfFile;
 import ucar.nc2.Variable;
 
 /**
- * 
+ *
  */
 public class NetCDFReadTask extends AbstractTask {
 
@@ -389,7 +389,7 @@ public class NetCDFReadTask extends AbstractTask {
     if (scanLength[0] == 0) {
       scanNum++;
       return new SimpleScan(null, scanNum, 1, retentionTime.doubleValue(), 0, 0, null,
-          new DataPoint[0], MassSpectrumType.CENTROIDED, PolarityType.UNKNOWN, "", null);
+          new DataPoint[0], MassSpectrumType.CENTROIDED, PolarityType.UNKNOWN, "", null, 0);
     }
 
     // Is there any way how to extract polarity from netcdf?
@@ -433,7 +433,7 @@ public class NetCDFReadTask extends AbstractTask {
     MassSpectrumType spectrumType = ScanUtils.detectSpectrumType(dataPoints);
 
     SimpleScan buildingScan = new SimpleScan(null, scanNum, 1, retentionTime.doubleValue(), 0, 0,
-        null, dataPoints, spectrumType, polarity, scanDefinition, null);
+        null, dataPoints, spectrumType, polarity, scanDefinition, null, 0);
 
     return buildingScan;
 

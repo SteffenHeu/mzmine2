@@ -395,6 +395,11 @@ public class PeptideScan implements Scan {
   }
 
   @Override
+  public double getInjectionTime() {
+    return 0;
+  }
+
+  @Override
   public @Nonnull PolarityType getPolarity() {
     // TODO Auto-generated method stub
     return PolarityType.UNKNOWN;

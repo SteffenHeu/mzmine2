@@ -68,6 +68,7 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements RawDat
   private PolarityType polarity = PolarityType.UNKNOWN;
   private String scanDescription = "";
   private Range<Double> scanMZRange = null;
+  private double injectionTime;
 
   private boolean canceled = false;
 
@@ -222,6 +223,11 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements RawDat
       retentionTime = Double.parseDouble(getTextOfElement()) / 60d;
     }
 
+    if (qName.equals(RawDataElementName_2_5.INJECTION_TIME.getElementName())) {
+//      logger.info("reading it: " + getTextOfElement());
+      injectionTime = Double.parseDouble(getTextOfElement());
+    }
+
     if (qName.equals(RawDataElementName_2_5.QUANTITY_DATAPOINTS.getElementName())) {
       dataPointsNumber = Integer.parseInt(getTextOfElement());
     }
@@ -234,7 +240,7 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements RawDat
 
       StorableScan storableScan = new StorableScan(newRawDataFile, currentStorageID,
           dataPointsNumber, scanNumber, msLevel, retentionTime, precursorMZ, precursorCharge,
-          fragmentScan, null, polarity, scanDescription, scanMZRange);
+          fragmentScan, null, polarity, scanDescription, scanMZRange, injectionTime);
 
       try {
         newRawDataFile.addScan(storableScan);
@@ -260,7 +266,7 @@ public class RawDataFileOpenHandler_2_5 extends DefaultHandler implements RawDat
       polarity = PolarityType.UNKNOWN;
       scanDescription = "";
       scanMZRange = null;
-
+      injectionTime = 0;
     }
   }
 

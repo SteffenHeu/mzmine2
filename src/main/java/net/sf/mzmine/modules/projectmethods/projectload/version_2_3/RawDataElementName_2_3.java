@@ -25,7 +25,7 @@ enum RawDataElementName_2_3 {
           "fragmentscan"), QUANTITY("quantity"), PARENT_SCAN(
               "parent"), PRECURSOR_MZ("precursor_mz"), PRECURSOR_CHARGE(
                   "precursor_charge"), RETENTION_TIME("rt"), CENTROIDED(
-                      "centroid"), QUANTITY_DATAPOINTS("num_dp"), MASS_LIST("mass_list");
+                      "centroid"), QUANTITY_DATAPOINTS("num_dp"), MASS_LIST("mass_list"), INJECTION_TIME("injection_time");
 
   private String elementName;
 

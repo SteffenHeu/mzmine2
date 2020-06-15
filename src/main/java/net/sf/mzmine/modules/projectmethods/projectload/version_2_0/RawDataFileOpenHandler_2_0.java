@@ -57,6 +57,7 @@ public class RawDataFileOpenHandler_2_0 extends DefaultHandler implements RawDat
   private int dataPointsNumber;
   private long storageFileOffset;
   private int fragmentCount;
+  private double injectionTime;
 
   private boolean canceled = false;
 
@@ -164,6 +165,10 @@ public class RawDataFileOpenHandler_2_0 extends DefaultHandler implements RawDat
       retentionTime = Double.parseDouble(getTextOfElement()) / 60d;
     }
 
+    if (qName.equals(RawDataElementName_2_0.INJECTION_TIME.getElementName())) {
+      injectionTime = Double.parseDouble(getTextOfElement());
+    }
+
     if (qName.equals(RawDataElementName_2_0.CENTROIDED.getElementName())) {
       boolean centroided = Boolean.parseBoolean(getTextOfElement());
       if (centroided)
@@ -191,7 +196,7 @@ public class RawDataFileOpenHandler_2_0 extends DefaultHandler implements RawDat
 
         StorableScan storableScan = new StorableScan(newRawDataFile, newStorageID, dataPointsNumber,
             scanNumber, msLevel, retentionTime, precursorMZ, precursorCharge, fragmentScan,
-            spectrumType, PolarityType.UNKNOWN, "", null);
+            spectrumType, PolarityType.UNKNOWN, "", null, injectionTime);
         newRawDataFile.addScan(storableScan);
 
         dataPointsOffsets.put(newStorageID, storageFileOffset);

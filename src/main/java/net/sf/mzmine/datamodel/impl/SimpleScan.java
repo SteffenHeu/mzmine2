@@ -20,6 +20,7 @@ package net.sf.mzmine.datamodel.impl;
 
 import com.google.common.collect.Range;
 import com.google.common.primitives.Ints;
+import java.util.Arrays;
 import net.sf.mzmine.datamodel.*;
 import net.sf.mzmine.util.scans.ScanUtils;
 
@@ -47,6 +48,7 @@ public class SimpleScan implements Scan {
   private PolarityType polarity;
   private String scanDefinition;
   private Range<Double> scanMZRange;
+  private final double injectionTime;
 
   /**
    * Clone constructor
@@ -55,13 +57,13 @@ public class SimpleScan implements Scan {
     this(sc.getDataFile(), sc.getScanNumber(), sc.getMSLevel(), sc.getRetentionTime(),
         sc.getPrecursorMZ(), sc.getPrecursorCharge(), sc.getFragmentScanNumbers(),
         sc.getDataPoints(), sc.getSpectrumType(), sc.getPolarity(), sc.getScanDefinition(),
-        sc.getScanningMZRange());
+        sc.getScanningMZRange(), sc.getInjectionTime());
   }
 
   /**
    * Constructor for creating scan with given data
    */
-  public SimpleScan(RawDataFile dataFile, int scanNumber, int msLevel, double retentionTime,
+  /*public SimpleScan(RawDataFile dataFile, int scanNumber, int msLevel, double retentionTime,
       double precursorMZ, int precursorCharge, int fragmentScans[], DataPoint[] dataPoints,
       MassSpectrumType spectrumType, PolarityType polarity, String scanDefinition,
       Range<Double> scanMZRange) {
@@ -81,6 +83,33 @@ public class SimpleScan implements Scan {
 
     if (dataPoints != null)
       setDataPoints(dataPoints);
+
+    this.injectionTime = 0.0;
+    System.out.println("Scan #" + scanNumber + " it " + injectionTime);
+  }*/
+
+  public SimpleScan(RawDataFile dataFile, int scanNumber, int msLevel, double retentionTime,
+      double precursorMZ, int precursorCharge, int fragmentScans[], DataPoint[] dataPoints,
+      MassSpectrumType spectrumType, PolarityType polarity, String scanDefinition,
+      Range<Double> scanMZRange, double injectionTime) {
+
+    // save scan data
+    this.dataFile = dataFile;
+    this.scanNumber = scanNumber;
+    this.msLevel = msLevel;
+    this.retentionTime = retentionTime;
+    this.precursorMZ = precursorMZ;
+    this.fragmentScans = fragmentScans;
+    this.spectrumType = spectrumType;
+    this.precursorCharge = precursorCharge;
+    this.polarity = polarity;
+    this.scanDefinition = scanDefinition;
+    this.scanMZRange = scanMZRange;
+
+    if (dataPoints != null)
+      setDataPoints(dataPoints);
+
+    this.injectionTime = injectionTime;
   }
 
   /**
@@ -312,6 +341,11 @@ public class SimpleScan implements Scan {
   @Override
   public synchronized void removeMassList(@Nonnull MassList massList) {
     throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public double getInjectionTime() {
+    return injectionTime;
   }
 
   @Override

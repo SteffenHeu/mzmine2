@@ -28,7 +28,7 @@ enum RawDataElementName_2_5 {
                       "mass_list"), STORED_DATAPOINTS(
                           "stored_datapoints"), STORED_DATA("stored_data"), STORAGE_ID(
                               "storage_id"), POLARITY("polarity"), SCAN_DESCRIPTION(
-                                  "scan_description"), SCAN_MZ_RANGE("scan_mz_range");
+                                  "scan_description"), SCAN_MZ_RANGE("scan_mz_range"), INJECTION_TIME("injection_time");
 
   private String elementName;
 

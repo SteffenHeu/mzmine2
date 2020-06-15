@@ -290,6 +290,7 @@ public class MZmineModulesList {
       IsotopePatternPreviewModule.class, //
       KovatsIndexExtractionModule.class, //
 
+
       // all other regular MZmineModule (not MZmineRunnableModule) NOT LISTED IN MENU
       SpectraIdentificationSpectralDatabaseModule.class, //
       LibrarySubmitModule.class, //

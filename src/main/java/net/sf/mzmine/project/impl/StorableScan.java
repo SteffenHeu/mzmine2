@@ -61,6 +61,7 @@ public class StorableScan implements Scan {
   private PolarityType polarity;
   private String scanDefinition;
   private Range<Double> scanMZRange;
+  private double injectionTime;
 
   private int storageID;
 
@@ -88,13 +89,13 @@ public class StorableScan implements Scan {
     this.polarity = originalScan.getPolarity();
     this.scanDefinition = originalScan.getScanDefinition();
     this.scanMZRange = originalScan.getScanningMZRange();
-
+    this.injectionTime = originalScan.getInjectionTime();
   }
 
   public StorableScan(RawDataFileImpl rawDataFile, int storageID, int numberOfDataPoints,
       int scanNumber, int msLevel, double retentionTime, double precursorMZ, int precursorCharge,
       int fragmentScans[], MassSpectrumType spectrumType, PolarityType polarity,
-      String scanDefinition, Range<Double> scanMZRange) {
+      String scanDefinition, Range<Double> scanMZRange, double injectionTime) {
 
     this.rawDataFile = rawDataFile;
     this.numberOfDataPoints = numberOfDataPoints;
@@ -110,6 +111,7 @@ public class StorableScan implements Scan {
     this.polarity = polarity;
     this.scanDefinition = scanDefinition;
     this.scanMZRange = scanMZRange;
+    this.injectionTime = injectionTime;
   }
 
   /**
@@ -373,6 +375,11 @@ public class StorableScan implements Scan {
 
     }
 
+  }
+
+  @Override
+  public double getInjectionTime() {
+    return injectionTime;
   }
 
 
